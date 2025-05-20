@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import FontSwitcher from "./FontSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
@@ -8,7 +8,7 @@ import { useViewport } from "@/lib/useViewport";
 
 export default function FontThemeWithScroll() {
   const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollY = useRef(0);
   const [mounted, setMounted] = useState(false);
 
   const { isMobile } = useViewport();
@@ -17,14 +17,14 @@ export default function FontThemeWithScroll() {
     setMounted(true);
     const handleScroll = () => {
       const current = window.scrollY;
-      if (Math.abs(current - lastScrollY) < 2) return;
-      setVisible(current < lastScrollY || current < 10);
-      setLastScrollY(current);
+      if (Math.abs(current - lastScrollY.current) < 2) return;
+      setVisible(current < lastScrollY.current || current < 10);
+      lastScrollY.current = current;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   if (!mounted) return null;
 
