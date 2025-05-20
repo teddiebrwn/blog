@@ -68,7 +68,7 @@ describe("Font functionality", () => {
   });
 
   it("should handle font application errors gracefully", () => {
-    const fontId = "invalid-font" as any;
+    const fontId = "invalid-font" as unknown;
     const consoleSpy = jest.spyOn(console, "error").mockImplementation();
 
     applyFontToDocument(fontId);
