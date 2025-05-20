@@ -14,7 +14,7 @@ export default function FontSwitcher() {
 
   return (
     <Select value={currentFont} onValueChange={setFont}>
-      <SelectTrigger className="cursor-pointer w-[180px] bg-accent border-accent">
+      <SelectTrigger className="cursor-pointer w-[180px] bg-accent border-border">
         <SelectValue placeholder="Select font" />
       </SelectTrigger>
       <SelectContent>

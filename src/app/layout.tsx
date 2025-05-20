@@ -18,7 +18,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className="font-geist-sans p-0 m-0 leading-normal"
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -33,7 +37,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen antialiased">
+      <body className="min-h-screen antialiased bg-background text-foreground">
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>

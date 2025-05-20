@@ -37,9 +37,9 @@ export default function LayoutWrapper({
   }, [isBlog]);
 
   return (
-    <div className="layout-wrapper">
+    <div className="min-h-screen flex flex-col">
       {isBlog ? (
-        <div className="blog-layout">
+        <div className="max-w-3xl mx-auto p-4">
           <FontThemeWithScroll />
           <SelectionQuote />
           {children}

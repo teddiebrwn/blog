@@ -26,7 +26,7 @@ export default function ThemeSwitcher() {
 
   return (
     <Select value={currentTheme.name} onValueChange={setTheme}>
-      <SelectTrigger className="cursor-pointer w-fit bg-accent border-accent">
+      <SelectTrigger className="cursor-pointer w-fit bg-accent border-border">
         <SelectValue placeholder="Select theme" />
       </SelectTrigger>
       <SelectContent>
