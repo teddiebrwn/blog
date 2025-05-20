@@ -8,9 +8,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useTheme } from "@/lib/hooks/useTheme";
+import { useEffect } from "react";
 
 export default function ThemeSwitcher() {
   const { currentTheme, setTheme, themes } = useTheme();
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e: MediaQueryListEvent) => {
+      const theme = e.matches ? "Carbon" : "Default";
+      setTheme(theme);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [setTheme]);
 
   return (
     <Select value={currentTheme.name} onValueChange={setTheme}>

@@ -80,4 +80,18 @@ export const applyThemeToDocument = (theme: Theme): void => {
   Object.entries(variables).forEach(([key, value]) => {
     root.style.setProperty(key, value);
   });
+
+  root.setAttribute("data-theme", theme.name);
+  localStorage.setItem(THEME_STORAGE_KEY, theme.name);
+
+  // Update meta theme-color for browser UI
+  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute("content", theme.background);
+  } else {
+    const meta = document.createElement("meta");
+    meta.name = "theme-color";
+    meta.content = theme.background;
+    document.head.appendChild(meta);
+  }
 };
