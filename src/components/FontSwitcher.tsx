@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import {
   Inter,
@@ -180,7 +181,7 @@ export default function FontSwitcher() {
   return (
     <div>
       <Select value={font} onValueChange={(value: FontId) => setFont(value)}>
-        <SelectTrigger className="cursor-pointer w-fit bg-accent">
+        <SelectTrigger className="cursor-pointer w-[180px] bg-accent">
           <SelectValue placeholder="Select font" />
         </SelectTrigger>
         <SelectContent>
