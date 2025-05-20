@@ -7,7 +7,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col" style={{ minHeight: "100dvh" }}>
       <Header />
       <div className="flex flex-col flex-1">
         <main className="flex flex-col flex-1 w-full max-w-5xl px-4 mx-auto sm:px-6 lg:px-8">
