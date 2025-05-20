@@ -29,15 +29,6 @@ const themes = [
     accentForeground: "oklch(0.2 0.02 85)",
   },
   {
-    name: "Black",
-    background: "#18181b",
-    foreground: "#fff",
-    card: "#232329",
-    cardForeground: "#fff",
-    accent: "#232329",
-    accentForeground: "#fff",
-  },
-  {
     name: "Carbon",
     background: "#23272e",
     foreground: "#e5e7eb",
@@ -45,6 +36,15 @@ const themes = [
     cardForeground: "#e5e7eb",
     accent: "#31363f",
     accentForeground: "#e5e7eb",
+  },
+  {
+    name: "Black",
+    background: "#18181b",
+    foreground: "#fff",
+    card: "#232329",
+    cardForeground: "#fff",
+    accent: "#232329",
+    accentForeground: "#fff",
   },
 ];
 

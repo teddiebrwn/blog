@@ -1,5 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
+
+const fonts = [
+  "font-default",
+  "font-inter",
+  "font-roboto",
+  "font-open-sans",
+  "font-merriweather",
+  "font-lora",
+  "font-garamond",
+  "font-dm",
+  "font-manrope",
+  "font-playfair",
+  "font-grotesk",
+];
+
 import {
   Inter,
   Merriweather,
@@ -94,11 +109,10 @@ const fontOptions = [
 ];
 
 export default function FontSwitcher() {
-  const [font, setFont] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("font-choice") || "inter";
-    }
-    return "inter";
+  const [font, setFont] = useState<string>(() => {
+    return typeof window !== "undefined"
+      ? localStorage.getItem("preferred-font") || "font-default"
+      : "font-default";
   });
 
   useEffect(() => {
@@ -108,7 +122,9 @@ export default function FontSwitcher() {
     if (selected?.font.style?.fontFamily) {
       html.style.fontFamily = selected.font.style.fontFamily;
     }
-    localStorage.setItem("font-choice", font);
+    localStorage.setItem("preferred-font", font);
+    document.body.classList.remove(...fonts);
+    document.body.classList.add(font);
   }, [font]);
 
   return (
