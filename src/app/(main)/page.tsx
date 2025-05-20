@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
-
+import Link from "next/link";
 export default function Page() {
   return (
     <main className="flex flex-col justify-center">
@@ -15,7 +15,7 @@ export default function Page() {
           A place to read, write, and deepen your understanding
         </p>
         <Button className="p-6 mt-4 text-xl transition-colors rounded-2xl bg-primary sm:text-2xl w-fit">
-          <a href="/blog/the-future-of-ai">Start reading</a>
+          <Link href="/blog/the-future-of-ai">Start reading</Link>
           <ChevronRight className="w-4 h-4" />
         </Button>
       </section>
