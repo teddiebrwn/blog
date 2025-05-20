@@ -4,14 +4,27 @@ import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import FontSwitcher from "./FontSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
-import { useViewport } from "@/lib/useViewport";
+
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  return isMobile;
+};
 
 export default function FontThemeWithScroll() {
   const [visible, setVisible] = useState(true);
   const lastScrollY = useRef(0);
   const [mounted, setMounted] = useState(false);
-
-  const { isMobile } = useViewport();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setMounted(true);
@@ -31,11 +44,9 @@ export default function FontThemeWithScroll() {
   return (
     <div
       className={cn(
-        "fixed right-4 flex gap-2 z-50 transition-all duration-300",
-        isMobile ? "bottom-4" : "top-4",
-        visible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-4 pointer-events-none"
+        "font-theme-container",
+        !visible && "hidden",
+        isMobile ? "bottom-4" : "top-4"
       )}
     >
       <ThemeSwitcher />

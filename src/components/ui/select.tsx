@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import { useViewport } from "@/lib/useViewport";
+import { CheckIcon, ChevronDownIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -33,8 +32,6 @@ function SelectTrigger({
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: "sm" | "default";
 }) {
-  const { isMobile } = useViewport();
-
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
@@ -47,11 +44,7 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        {isMobile ? (
-          <ChevronUpIcon className="size-4 opacity-50" />
-        ) : (
-          <ChevronDownIcon className="size-4 opacity-50" />
-        )}
+        <ChevronDownIcon className="opacity-50 size-4" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -155,7 +148,7 @@ function SelectScrollUpButton({
       )}
       {...props}
     >
-      <ChevronUpIcon className="size-4" />
+      <ChevronDownIcon className="size-4" />
     </SelectPrimitive.ScrollUpButton>
   );
 }
