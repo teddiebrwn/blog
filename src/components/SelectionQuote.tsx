@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-export default function SelectionQuote({ delay = 1500 }: { delay?: number }) {
+export default function SelectionQuote({ delay = 1000 }: { delay?: number }) {
   const [text, setText] = useState("");
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const hideRef = useRef<NodeJS.Timeout | null>(null);
@@ -20,6 +20,11 @@ export default function SelectionQuote({ delay = 1500 }: { delay?: number }) {
         setText("");
       }, delay);
     };
+    const hide = () => {
+      if (hideRef.current) clearTimeout(hideRef.current);
+      setPos(null);
+      setText("");
+    };
     const onPointerUp = () => {
       const sel = window.getSelection();
       const raw = sel?.toString().trim();
@@ -28,11 +33,23 @@ export default function SelectionQuote({ delay = 1500 }: { delay?: number }) {
       show(raw, rect);
     };
     const onMouseUp = onPointerUp;
+    const onSelectionChange = () => {
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed || !sel.toString().trim()) hide();
+    };
+    const onTouchStart = hide;
+    const onMouseDown = hide;
     document.addEventListener("pointerup", onPointerUp, { passive: true });
     document.addEventListener("mouseup", onMouseUp, { passive: true });
+    document.addEventListener("selectionchange", onSelectionChange);
+    document.addEventListener("touchstart", onTouchStart, { passive: true });
+    document.addEventListener("mousedown", onMouseDown, { passive: true });
     return () => {
       document.removeEventListener("pointerup", onPointerUp);
       document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("selectionchange", onSelectionChange);
+      document.removeEventListener("touchstart", onTouchStart);
+      document.removeEventListener("mousedown", onMouseDown);
       if (hideRef.current) clearTimeout(hideRef.current);
     };
   }, [delay]);

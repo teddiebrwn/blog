@@ -21,10 +21,9 @@ import {
 } from "@/components/ui/select";
 
 const STORAGE_KEY = "preferred-font";
-const DEFAULT_FONT = "font-default";
+const DEFAULT_FONT = "font-inter";
 
 type FontId =
-  | "font-default"
   | "font-inter"
   | "font-roboto"
   | "font-open-sans"
