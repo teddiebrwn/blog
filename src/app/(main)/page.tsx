@@ -3,9 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+
 export default function Page() {
   return (
-    <main className="flex flex-col flex-1 justify-center min-h-0">
+    <main className="flex flex-col justify-center flex-1 min-h-0">
       <section className="">
         <div className="font-serif text-6xl font-bold leading-tight">
           <h1>Human</h1>
