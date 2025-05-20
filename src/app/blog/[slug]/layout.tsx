@@ -1,5 +1,5 @@
 import FontThemeWithScroll from "@/components/FontThemeWithScroll";
-
+import SelectionQuote from "@/components/SelectionQuote";
 export default function BlogPostLayout({
   children,
 }: {
@@ -10,6 +10,7 @@ export default function BlogPostLayout({
       <div className="my-6">
         <FontThemeWithScroll />
       </div>
+      <SelectionQuote />
       {children}
     </div>
   );
