@@ -1,20 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-
-const fonts = [
-  "font-default",
-  "font-inter",
-  "font-roboto",
-  "font-open-sans",
-  "font-merriweather",
-  "font-lora",
-  "font-garamond",
-  "font-dm",
-  "font-manrope",
-  "font-playfair",
-  "font-grotesk",
-];
-
 import {
   Inter,
   Merriweather,
@@ -35,59 +20,98 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const STORAGE_KEY = "preferred-font";
+const DEFAULT_FONT = "font-default";
+
+type FontId =
+  | "font-default"
+  | "font-inter"
+  | "font-roboto"
+  | "font-open-sans"
+  | "font-merriweather"
+  | "font-lora"
+  | "font-garamond"
+  | "font-dm"
+  | "font-manrope"
+  | "font-playfair"
+  | "font-grotesk";
+
+const fonts: FontId[] = [
+  DEFAULT_FONT,
+  "font-inter",
+  "font-roboto",
+  "font-open-sans",
+  "font-merriweather",
+  "font-lora",
+  "font-garamond",
+  "font-dm",
+  "font-manrope",
+  "font-playfair",
+  "font-grotesk",
+];
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
 });
+
 const merriweather = Merriweather({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
   variable: "--font-merriweather",
 });
+
 const lora = Lora({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
   variable: "--font-lora",
 });
+
 const garamond = EB_Garamond({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
   variable: "--font-garamond",
 });
+
 const dm = DM_Sans({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
   variable: "--font-dm",
 });
+
 const manrope = Manrope({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
   variable: "--font-manrope",
 });
+
 const playfair = Playfair_Display({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
   variable: "--font-playfair",
 });
+
 const grotesk = Space_Grotesk({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
   variable: "--font-grotesk",
 });
+
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
   variable: "--font-roboto",
 });
+
 const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["400"],
@@ -95,7 +119,20 @@ const openSans = Open_Sans({
   variable: "--font-open-sans",
 });
 
-const fontOptions = [
+type NextFont = {
+  variable: string;
+  style?: {
+    fontFamily: string;
+  };
+};
+
+type FontOption = {
+  id: string;
+  name: string;
+  font: NextFont;
+};
+
+const fontOptions: FontOption[] = [
   { id: "inter", name: "Inter", font: inter },
   { id: "roboto", name: "Roboto", font: roboto },
   { id: "open-sans", name: "Open Sans", font: openSans },
@@ -109,27 +146,41 @@ const fontOptions = [
 ];
 
 export default function FontSwitcher() {
-  const [font, setFont] = useState<string>(() => {
-    return typeof window !== "undefined"
-      ? localStorage.getItem("preferred-font") || "font-default"
-      : "font-default";
+  const [font, setFont] = useState<FontId>(() => {
+    if (typeof window === "undefined") return DEFAULT_FONT;
+
+    const storedFont = localStorage.getItem(STORAGE_KEY);
+    return storedFont && fonts.includes(storedFont as FontId)
+      ? (storedFont as FontId)
+      : DEFAULT_FONT;
   });
 
   useEffect(() => {
-    const html = document.documentElement;
-    const selected = fontOptions.find((f) => f.id === font);
-    html.className = selected?.font.variable || "";
-    if (selected?.font.style?.fontFamily) {
-      html.style.fontFamily = selected.font.style.fontFamily;
+    try {
+      const html = document.documentElement;
+      const selected = fontOptions.find(
+        (f) => f.id === font.replace("font-", "")
+      );
+
+      if (selected?.font.variable) {
+        html.className = selected.font.variable;
+      }
+
+      if (selected?.font.style?.fontFamily) {
+        html.style.fontFamily = selected.font.style.fontFamily;
+      }
+
+      localStorage.setItem(STORAGE_KEY, font);
+      document.body.classList.remove(...fonts);
+      document.body.classList.add(font);
+    } catch (error) {
+      console.error("Error applying font:", error);
     }
-    localStorage.setItem("preferred-font", font);
-    document.body.classList.remove(...fonts);
-    document.body.classList.add(font);
   }, [font]);
 
   return (
-    <div className="">
-      <Select value={font} onValueChange={setFont}>
+    <div>
+      <Select value={font} onValueChange={(value: FontId) => setFont(value)}>
         <SelectTrigger className="cursor-pointer w-fit bg-accent">
           <SelectValue placeholder="Select font" />
         </SelectTrigger>
@@ -137,7 +188,7 @@ export default function FontSwitcher() {
           {fontOptions.map((f) => (
             <SelectItem
               key={f.id}
-              value={f.id}
+              value={`font-${f.id}`}
               style={f.font.style}
               className="cursor-pointer"
             >

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -48,8 +48,49 @@ const themes = [
   },
 ];
 
+const STORAGE_KEY = "preferred-theme";
+
 export default function ThemeSwitcher() {
-  const [currentTheme, setCurrentTheme] = useState(themes[0]);
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    if (typeof window === "undefined") return themes[0];
+    const storedTheme = localStorage.getItem(STORAGE_KEY);
+    return themes.find((t) => t.name === storedTheme) || themes[0];
+  });
+
+  useEffect(() => {
+    const theme = currentTheme;
+    document.documentElement.style.setProperty(
+      "--reading-background",
+      theme.background
+    );
+    document.documentElement.style.setProperty(
+      "--reading-foreground",
+      theme.foreground
+    );
+    document.documentElement.style.setProperty("--reading-card", theme.card);
+    document.documentElement.style.setProperty(
+      "--reading-card-foreground",
+      theme.cardForeground
+    );
+    document.documentElement.style.setProperty(
+      "--background",
+      theme.background
+    );
+    document.documentElement.style.setProperty(
+      "--foreground",
+      theme.foreground
+    );
+    document.documentElement.style.setProperty("--card", theme.card);
+    document.documentElement.style.setProperty(
+      "--card-foreground",
+      theme.cardForeground
+    );
+    document.documentElement.style.setProperty("--accent", theme.accent);
+    document.documentElement.style.setProperty(
+      "--accent-foreground",
+      theme.accentForeground
+    );
+  }, [currentTheme]);
 
   const applyTheme = (themeName: string) => {
     const theme = themes.find((t) => t.name === themeName) || themes[0];
@@ -85,6 +126,7 @@ export default function ThemeSwitcher() {
       theme.accentForeground
     );
     setCurrentTheme(theme);
+    localStorage.setItem(STORAGE_KEY, theme.name);
   };
 
   return (
