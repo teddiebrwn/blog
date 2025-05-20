@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import FontThemeWithScroll from "@/components/FontThemeWithScroll";
-import SelectionQuote from "@/components/SelectionQuote";
-// import Nav from "@/components/nav";
 
 export const metadata: Metadata = {
   title: "My Blog",
   description: "Blog with switchable font styles",
+  viewport: "width=device-width, initial-scale=1",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -15,11 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="antialiased">
-        <SelectionQuote />
-        <FontThemeWithScroll />
-        {/* <Nav /> */}
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen bg-background font-sans antialiased">
         {children}
       </body>
     </html>

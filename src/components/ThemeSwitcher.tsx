@@ -132,7 +132,7 @@ export default function ThemeSwitcher() {
   return (
     <div className="">
       <Select value={currentTheme.name} onValueChange={applyTheme}>
-        <SelectTrigger className="cursor-pointer w-fit bg-accent">
+        <SelectTrigger className="cursor-pointer w-fit bg-accent border-accent">
           <SelectValue placeholder="Select theme" />
         </SelectTrigger>
         <SelectContent>

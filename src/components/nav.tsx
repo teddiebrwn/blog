@@ -1,3 +1,7 @@
 export default function Nav() {
-  return <div>Nav</div>;
+  return (
+    <div className="flex items-center justify-between">
+      <div>hello</div>
+    </div>
+  );
 }

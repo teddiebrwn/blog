@@ -116,10 +116,10 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  --reading-background: oklch(0.12 0 0);
+  /* --reading-background: oklch(0.12 0 0);
   --reading-foreground: oklch(0.95 0 0);
   --reading-card: oklch(0.15 0 0);
-  --reading-card-foreground: oklch(0.95 0 0);
+  --reading-card-foreground: oklch(0.95 0 0); */
 }
 
 @layer base {
