@@ -1,58 +1,50 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 
-export default function SelectionQuote() {
+export default function SelectionQuote({ delay = 1500 }: { delay?: number }) {
   const [text, setText] = useState("");
-  const [coords, setCoords] = useState<{ x: number; y: number } | null>(null);
-  const timeout = useRef<NodeJS.Timeout | null>(null);
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  const hideRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const handleSelection = () => {
-      const sel = window.getSelection();
-      const raw = sel?.toString().trim();
-      if (!raw) return;
-
-      const range = sel.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
-      if (!rect) return;
-
+    const show = (raw: string, rect: DOMRect) => {
       setText(raw);
-      setCoords({
+      setPos({
         x: rect.left + rect.width / 2,
         y: rect.bottom + window.scrollY + 8,
       });
-
-      navigator.clipboard.writeText(raw).catch(console.error);
-
-      if (timeout.current) clearTimeout(timeout.current);
-      timeout.current = setTimeout(() => {
+      navigator.clipboard?.writeText(raw).catch(() => {});
+      if (hideRef.current) clearTimeout(hideRef.current);
+      hideRef.current = setTimeout(() => {
+        setPos(null);
         setText("");
-        setCoords(null);
-      }, 1500);
+      }, delay);
     };
-
-    document.addEventListener("selectionchange", handleSelection);
+    const onPointerUp = () => {
+      const sel = window.getSelection();
+      const raw = sel?.toString().trim();
+      if (!raw || !sel || sel.rangeCount === 0) return;
+      const rect = sel.getRangeAt(0).getBoundingClientRect();
+      show(raw, rect);
+    };
+    const onMouseUp = onPointerUp;
+    document.addEventListener("pointerup", onPointerUp, { passive: true });
+    document.addEventListener("mouseup", onMouseUp, { passive: true });
     return () => {
-      document.removeEventListener("selectionchange", handleSelection);
-      if (timeout.current) clearTimeout(timeout.current);
+      document.removeEventListener("pointerup", onPointerUp);
+      document.removeEventListener("mouseup", onMouseUp);
+      if (hideRef.current) clearTimeout(hideRef.current);
     };
-  }, []);
+  }, [delay]);
 
-  if (!coords || !text) return null;
+  if (!pos) return null;
 
   return (
     <div
-      style={{
-        top: coords.y,
-        left: coords.x,
-        position: "absolute",
-        transform: "translateX(-50%)",
-      }}
-      className="z-50 flex px-3 py-1 text-sm text-white rounded shadow-md bg-zinc-800 animate-fade-in"
+      className="fixed z-50 px-3 py-1 text-sm text-white rounded shadow-md bg-zinc-800 animate-fade-in"
+      style={{ top: pos.y, left: pos.x, transform: "translateX(-50%)" }}
     >
-      <p className="font-bold">Copied:</p>
-      <span className="ml-1">{text}</span>
+      Copied: <span className="font-medium">{text}</span>
     </div>
   );
 }
