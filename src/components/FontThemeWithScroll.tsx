@@ -18,11 +18,7 @@ export default function FontThemeWithScroll() {
     const handleScroll = () => {
       const current = window.scrollY;
       if (Math.abs(current - lastScrollY.current) < 2) return;
-      if (navigator.vibrate) {
-        navigator.vibrate(10);
-      }
-      const nextVisible = current < lastScrollY.current || current < 10;
-      setVisible(nextVisible);
+      setVisible(current < lastScrollY.current || current < 10);
       lastScrollY.current = current;
     };
 
